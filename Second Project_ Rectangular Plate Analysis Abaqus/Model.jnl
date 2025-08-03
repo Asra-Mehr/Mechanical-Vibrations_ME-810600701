@@ -1,0 +1,345 @@
+# -*- coding: mbcs -*-
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-1'].ConstrainedSketch(name='__profile__', sheetSize=4.0)
+mdb.models['Model-1'].sketches['__profile__'].rectangle(point1=(0.3, -0.2), 
+    point2=(-0.55, 0.35))
+mdb.models['Model-1'].sketches['__profile__'].ObliqueDimension(textPoint=(
+    -0.732881844043732, 0.030239999294281), value=0.5, vertex1=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[2], vertex2=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[3])
+mdb.models['Model-1'].sketches['__profile__'].ObliqueDimension(textPoint=(
+    0.0257346630096436, 0.44240003824234), value=1.0, vertex1=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[1], vertex2=
+    mdb.models['Model-1'].sketches['__profile__'].vertices[2])
+mdb.models['Model-1'].Part(dimensionality=THREE_D, name='Part-1', type=
+    DEFORMABLE_BODY)
+mdb.models['Model-1'].parts['Part-1'].BaseSolidExtrude(depth=0.01, sketch=
+    mdb.models['Model-1'].sketches['__profile__'])
+del mdb.models['Model-1'].sketches['__profile__']
+mdb.models['Model-1'].Material(name='Steel')
+mdb.models['Model-1'].materials['Steel'].Density(table=((7800.0, ), ))
+mdb.models['Model-1'].materials['Steel'].Elastic(table=((210000000000.0, 0.3), 
+    ))
+mdb.models['Model-1'].HomogeneousSolidSection(material='Steel', name='PlateSec'
+    , thickness=None)
+mdb.models['Model-1'].parts['Part-1'].Set(cells=
+    mdb.models['Model-1'].parts['Part-1'].cells.getSequenceFromMask(('[#1 ]', 
+    ), ), name='Set-1')
+mdb.models['Model-1'].parts['Part-1'].SectionAssignment(offset=0.0, 
+    offsetField='', offsetType=MIDDLE_SURFACE, region=
+    mdb.models['Model-1'].parts['Part-1'].sets['Set-1'], sectionName='PlateSec'
+    , thicknessAssignment=FROM_SECTION)
+mdb.models['Model-1'].rootAssembly.DatumCsysByDefault(CARTESIAN)
+mdb.models['Model-1'].rootAssembly.Instance(dependent=ON, name='Part-1-1', 
+    part=mdb.models['Model-1'].parts['Part-1'])
+mdb.models['Model-1'].FrequencyStep(limitSavedEigenvectorRegion=None, name=
+    'Step-1', numEigen=10, previous='Initial')
+mdb.models['Model-1'].steps['Step-1'].setValues(limitSavedEigenvectorRegion=
+    None)
+mdb.models['Model-1'].steps.changeKey(fromName='Step-1', toName='Frequency')
+mdb.Model(name='Model-2', objectToCopy=mdb.models['Model-1'])
+mdb.Model(name='Model-3', objectToCopy=mdb.models['Model-2'])
+mdb.models['Model-1'].rootAssembly.Set(faces=
+    mdb.models['Model-1'].rootAssembly.instances['Part-1-1'].faces.getSequenceFromMask(
+    ('[#8 ]', ), ), name='Set-1')
+mdb.models['Model-1'].EncastreBC(createStepName='Initial', localCsys=None, 
+    name='CCCC', region=mdb.models['Model-1'].rootAssembly.sets['Set-1'])
+mdb.models['Model-1'].boundaryConditions.changeKey(fromName='CCCC', toName=
+    'Cxxx')
+mdb.models['Model-1'].rootAssembly.Set(faces=
+    mdb.models['Model-1'].rootAssembly.instances['Part-1-1'].faces.getSequenceFromMask(
+    ('[#4 ]', ), ), name='Set-2')
+mdb.models['Model-1'].EncastreBC(createStepName='Initial', localCsys=None, 
+    name='xCxx', region=mdb.models['Model-1'].rootAssembly.sets['Set-2'])
+mdb.models['Model-1'].rootAssembly.Set(faces=
+    mdb.models['Model-1'].rootAssembly.instances['Part-1-1'].faces.getSequenceFromMask(
+    ('[#2 ]', ), ), name='Set-3')
+mdb.models['Model-1'].EncastreBC(createStepName='Initial', localCsys=None, 
+    name='xxCx', region=mdb.models['Model-1'].rootAssembly.sets['Set-3'])
+mdb.models['Model-1'].rootAssembly.Set(faces=
+    mdb.models['Model-1'].rootAssembly.instances['Part-1-1'].faces.getSequenceFromMask(
+    ('[#1 ]', ), ), name='Set-4')
+mdb.models['Model-1'].EncastreBC(createStepName='Initial', localCsys=None, 
+    name='xxxC', region=mdb.models['Model-1'].rootAssembly.sets['Set-4'])
+# Save by lenovo on 2025_08_03-00.31.21; build 2022 2021_09_15-17.57.30 176069
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-1'].parts['Part-1'].setElementType(elemTypes=(ElemType(
+    elemCode=C3D8R, elemLibrary=STANDARD, secondOrderAccuracy=OFF, 
+    kinematicSplit=AVERAGE_STRAIN, hourglassControl=DEFAULT, 
+    distortionControl=DEFAULT), ElemType(elemCode=C3D6, elemLibrary=STANDARD), 
+    ElemType(elemCode=C3D4, elemLibrary=STANDARD)), regions=(
+    mdb.models['Model-1'].parts['Part-1'].cells.getSequenceFromMask(('[#1 ]', 
+    ), ), ))
+mdb.models['Model-1'].parts['Part-1'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=0.03)
+mdb.models['Model-1'].parts['Part-1'].setElementType(elemTypes=(ElemType(
+    elemCode=C3D8R, elemLibrary=STANDARD, secondOrderAccuracy=OFF, 
+    kinematicSplit=AVERAGE_STRAIN, hourglassControl=DEFAULT, 
+    distortionControl=DEFAULT), ElemType(elemCode=C3D6, elemLibrary=STANDARD), 
+    ElemType(elemCode=C3D4, elemLibrary=STANDARD)), regions=(
+    mdb.models['Model-1'].parts['Part-1'].cells.getSequenceFromMask(('[#1 ]', 
+    ), ), ))
+mdb.models['Model-1'].parts['Part-1'].generateMesh()
+mdb.models['Model-1'].rootAssembly.regenerate()
+mdb.Job(atTime=None, contactPrint=OFF, description='', echoPrint=OFF, 
+    explicitPrecision=SINGLE, getMemoryFromAnalysis=True, historyPrint=OFF, 
+    memory=90, memoryUnits=PERCENTAGE, model='Model-1', modelPrint=OFF, 
+    multiprocessingMode=DEFAULT, name='CCCCPlate', nodalOutputPrecision=SINGLE, 
+    numCpus=1, numGPUs=0, numThreadsPerMpiProcess=1, queue=None, resultsFormat=
+    ODB, scratch='', type=ANALYSIS, userSubroutine='', waitHours=0, 
+    waitMinutes=0)
+mdb.jobs['CCCCPlate'].submit(consistencyChecking=OFF)
+mdb.jobs['CCCCPlate']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'clientHost': 'DESKTOP-GKM313D', 'handle': 0, 'jobName': 'CCCCPlate'})
+mdb.jobs['CCCCPlate']._Message(ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\Windows\\system32\\CCCCPlate.odb', 'jobName': 'CCCCPlate'})
+mdb.jobs['CCCCPlate']._Message(COMPLETED, {'phase': BATCHPRE_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'CCCCPlate'})
+mdb.jobs['CCCCPlate']._Message(STARTED, {'phase': STANDARD_PHASE, 
+    'clientHost': 'DESKTOP-GKM313D', 'handle': 1524, 'jobName': 'CCCCPlate'})
+mdb.jobs['CCCCPlate']._Message(STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'CCCCPlate'})
+mdb.jobs['CCCCPlate']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 0, 'jobName': 'CCCCPlate'})
+mdb.jobs['CCCCPlate']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'CCCCPlate', 'memory': 49.0})
+mdb.jobs['CCCCPlate']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 8067.0, 'jobName': 'CCCCPlate'})
+mdb.jobs['CCCCPlate']._Message(MINIMUM_MEMORY, {'minimum_memory': 20.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'CCCCPlate'})
+mdb.jobs['CCCCPlate']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 1, 'jobName': 'CCCCPlate'})
+mdb.jobs['CCCCPlate']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 2, 'jobName': 'CCCCPlate'})
+mdb.jobs['CCCCPlate']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 3, 'jobName': 'CCCCPlate'})
+mdb.jobs['CCCCPlate']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 4, 'jobName': 'CCCCPlate'})
+mdb.jobs['CCCCPlate']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 5, 'jobName': 'CCCCPlate'})
+mdb.jobs['CCCCPlate']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 6, 'jobName': 'CCCCPlate'})
+mdb.jobs['CCCCPlate']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 7, 'jobName': 'CCCCPlate'})
+mdb.jobs['CCCCPlate']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 8, 'jobName': 'CCCCPlate'})
+mdb.jobs['CCCCPlate']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 9, 'jobName': 'CCCCPlate'})
+mdb.jobs['CCCCPlate']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 10, 'jobName': 'CCCCPlate'})
+mdb.jobs['CCCCPlate']._Message(STATUS, {'totalTime': 0.0, 'attempts': 1, 
+    'timeIncrement': 1e-36, 'increment': 1, 'stepTime': 1e-36, 'step': 1, 
+    'jobName': 'CCCCPlate', 'severe': 0, 'iterations': 0, 
+    'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['CCCCPlate']._Message(END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'CCCCPlate'})
+mdb.jobs['CCCCPlate']._Message(COMPLETED, {'phase': STANDARD_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'CCCCPlate'})
+mdb.jobs['CCCCPlate']._Message(JOB_COMPLETED, {
+    'time': 'Sun Aug  3 00:45:41 2025', 'jobName': 'CCCCPlate'})
+# Save by lenovo on 2025_08_03-01.00.19; build 2022 2021_09_15-17.57.30 176069
+from part import *
+from material import *
+from section import *
+from assembly import *
+from step import *
+from interaction import *
+from load import *
+from mesh import *
+from optimization import *
+from job import *
+from sketch import *
+from visualization import *
+from connectorBehavior import *
+mdb.models['Model-2'].rootAssembly.Set(faces=
+    mdb.models['Model-2'].rootAssembly.instances['Part-1-1'].faces.getSequenceFromMask(
+    ('[#2 ]', ), ), name='Set-1')
+mdb.models['Model-2'].EncastreBC(createStepName='Initial', localCsys=None, 
+    name='Cxxx', region=mdb.models['Model-2'].rootAssembly.sets['Set-1'])
+mdb.models['Model-2'].rootAssembly.Set(faces=
+    mdb.models['Model-2'].rootAssembly.instances['Part-1-1'].faces.getSequenceFromMask(
+    ('[#8 ]', ), ), name='Set-2')
+mdb.models['Model-2'].EncastreBC(createStepName='Initial', localCsys=None, 
+    name='xxCx', region=mdb.models['Model-2'].rootAssembly.sets['Set-2'])
+mdb.models['Model-2'].parts['Part-1'].setElementType(elemTypes=(ElemType(
+    elemCode=C3D8R, elemLibrary=STANDARD, secondOrderAccuracy=OFF, 
+    kinematicSplit=AVERAGE_STRAIN, hourglassControl=DEFAULT, 
+    distortionControl=DEFAULT), ElemType(elemCode=C3D6, elemLibrary=STANDARD), 
+    ElemType(elemCode=C3D4, elemLibrary=STANDARD)), regions=(
+    mdb.models['Model-2'].parts['Part-1'].cells.getSequenceFromMask(('[#1 ]', 
+    ), ), ))
+mdb.models['Model-2'].parts['Part-1'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=0.03)
+mdb.models['Model-2'].parts['Part-1'].generateMesh()
+mdb.models['Model-2'].rootAssembly.regenerate()
+mdb.Job(atTime=None, contactPrint=OFF, description='', echoPrint=OFF, 
+    explicitPrecision=SINGLE, getMemoryFromAnalysis=True, historyPrint=OFF, 
+    memory=90, memoryUnits=PERCENTAGE, model='Model-2', modelPrint=OFF, 
+    multiprocessingMode=DEFAULT, name='CFCFPlate', nodalOutputPrecision=SINGLE, 
+    numCpus=1, numGPUs=0, numThreadsPerMpiProcess=1, queue=None, resultsFormat=
+    ODB, scratch='', type=ANALYSIS, userSubroutine='', waitHours=0, 
+    waitMinutes=0)
+mdb.jobs['CFCFPlate'].submit(consistencyChecking=OFF)
+mdb.jobs['CFCFPlate']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'clientHost': 'DESKTOP-GKM313D', 'handle': 0, 'jobName': 'CFCFPlate'})
+mdb.jobs['CFCFPlate']._Message(ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\Windows\\system32\\CFCFPlate.odb', 'jobName': 'CFCFPlate'})
+mdb.jobs['CFCFPlate']._Message(COMPLETED, {'phase': BATCHPRE_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'CFCFPlate'})
+mdb.jobs['CFCFPlate']._Message(STARTED, {'phase': STANDARD_PHASE, 
+    'clientHost': 'DESKTOP-GKM313D', 'handle': 13304, 'jobName': 'CFCFPlate'})
+mdb.jobs['CFCFPlate']._Message(STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'CFCFPlate'})
+mdb.jobs['CFCFPlate']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 0, 'jobName': 'CFCFPlate'})
+mdb.jobs['CFCFPlate']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'CFCFPlate', 'memory': 49.0})
+mdb.jobs['CFCFPlate']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 8067.0, 'jobName': 'CFCFPlate'})
+mdb.jobs['CFCFPlate']._Message(MINIMUM_MEMORY, {'minimum_memory': 20.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'CFCFPlate'})
+mdb.jobs['CFCFPlate']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 1, 'jobName': 'CFCFPlate'})
+mdb.jobs['CFCFPlate']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 2, 'jobName': 'CFCFPlate'})
+mdb.jobs['CFCFPlate']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 3, 'jobName': 'CFCFPlate'})
+mdb.jobs['CFCFPlate']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 4, 'jobName': 'CFCFPlate'})
+mdb.jobs['CFCFPlate']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 5, 'jobName': 'CFCFPlate'})
+mdb.jobs['CFCFPlate']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 6, 'jobName': 'CFCFPlate'})
+mdb.jobs['CFCFPlate']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 7, 'jobName': 'CFCFPlate'})
+mdb.jobs['CFCFPlate']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 8, 'jobName': 'CFCFPlate'})
+mdb.jobs['CFCFPlate']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 9, 'jobName': 'CFCFPlate'})
+mdb.jobs['CFCFPlate']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 10, 'jobName': 'CFCFPlate'})
+mdb.jobs['CFCFPlate']._Message(STATUS, {'totalTime': 0.0, 'attempts': 1, 
+    'timeIncrement': 1e-36, 'increment': 1, 'stepTime': 1e-36, 'step': 1, 
+    'jobName': 'CFCFPlate', 'severe': 0, 'iterations': 0, 
+    'phase': STANDARD_PHASE, 'equilibrium': 0})
+mdb.jobs['CFCFPlate']._Message(END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'CFCFPlate'})
+mdb.jobs['CFCFPlate']._Message(COMPLETED, {'phase': STANDARD_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'CFCFPlate'})
+mdb.jobs['CFCFPlate']._Message(JOB_COMPLETED, {
+    'time': 'Sun Aug  3 01:12:54 2025', 'jobName': 'CFCFPlate'})
+mdb.models['Model-3'].rootAssembly.Set(faces=
+    mdb.models['Model-3'].rootAssembly.instances['Part-1-1'].faces.getSequenceFromMask(
+    ('[#4 ]', ), ), name='Set-1')
+mdb.models['Model-3'].EncastreBC(createStepName='Initial', localCsys=None, 
+    name='BC-1', region=mdb.models['Model-3'].rootAssembly.sets['Set-1'])
+mdb.models['Model-3'].rootAssembly.Set(faces=
+    mdb.models['Model-3'].rootAssembly.instances['Part-1-1'].faces.getSequenceFromMask(
+    ('[#1 ]', ), ), name='Set-2')
+mdb.models['Model-3'].EncastreBC(createStepName='Initial', localCsys=None, 
+    name='xxxC', region=mdb.models['Model-3'].rootAssembly.sets['Set-2'])
+mdb.models['Model-3'].boundaryConditions['BC-1'].resume()
+mdb.models['Model-3'].boundaryConditions.changeKey(fromName='BC-1', toName=
+    'xCxx')
+mdb.models['Model-3'].parts['Part-1'].setElementType(elemTypes=(ElemType(
+    elemCode=C3D8R, elemLibrary=STANDARD, secondOrderAccuracy=OFF, 
+    kinematicSplit=AVERAGE_STRAIN, hourglassControl=DEFAULT, 
+    distortionControl=DEFAULT), ElemType(elemCode=C3D6, elemLibrary=STANDARD), 
+    ElemType(elemCode=C3D4, elemLibrary=STANDARD)), regions=(
+    mdb.models['Model-3'].parts['Part-1'].cells.getSequenceFromMask(('[#1 ]', 
+    ), ), ))
+mdb.models['Model-3'].parts['Part-1'].seedPart(deviationFactor=0.1, 
+    minSizeFactor=0.1, size=0.03)
+mdb.models['Model-3'].parts['Part-1'].generateMesh()
+mdb.models['Model-3'].rootAssembly.regenerate()
+mdb.Job(atTime=None, contactPrint=OFF, description='', echoPrint=OFF, 
+    explicitPrecision=SINGLE, getMemoryFromAnalysis=True, historyPrint=OFF, 
+    memory=90, memoryUnits=PERCENTAGE, model='Model-3', modelPrint=OFF, 
+    multiprocessingMode=DEFAULT, name='FCFC', nodalOutputPrecision=SINGLE, 
+    numCpus=1, numGPUs=0, numThreadsPerMpiProcess=1, queue=None, resultsFormat=
+    ODB, scratch='', type=ANALYSIS, userSubroutine='', waitHours=0, 
+    waitMinutes=0)
+mdb.jobs['FCFC'].submit(consistencyChecking=OFF)
+mdb.jobs['FCFC']._Message(STARTED, {'phase': BATCHPRE_PHASE, 
+    'clientHost': 'DESKTOP-GKM313D', 'handle': 0, 'jobName': 'FCFC'})
+mdb.jobs['FCFC']._Message(ODB_FILE, {'phase': BATCHPRE_PHASE, 
+    'file': 'C:\\Windows\\system32\\FCFC.odb', 'jobName': 'FCFC'})
+mdb.jobs['FCFC']._Message(COMPLETED, {'phase': BATCHPRE_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'FCFC'})
+mdb.jobs['FCFC']._Message(STARTED, {'phase': STANDARD_PHASE, 
+    'clientHost': 'DESKTOP-GKM313D', 'handle': 10620, 'jobName': 'FCFC'})
+mdb.jobs['FCFC']._Message(STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'FCFC'})
+mdb.jobs['FCFC']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 0, 'jobName': 'FCFC'})
+mdb.jobs['FCFC']._Message(MEMORY_ESTIMATE, {'phase': STANDARD_PHASE, 
+    'jobName': 'FCFC', 'memory': 49.0})
+mdb.jobs['FCFC']._Message(PHYSICAL_MEMORY, {'phase': STANDARD_PHASE, 
+    'physical_memory': 8067.0, 'jobName': 'FCFC'})
+mdb.jobs['FCFC']._Message(MINIMUM_MEMORY, {'minimum_memory': 20.0, 
+    'phase': STANDARD_PHASE, 'jobName': 'FCFC'})
+mdb.jobs['FCFC']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 1, 'jobName': 'FCFC'})
+mdb.jobs['FCFC']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 2, 'jobName': 'FCFC'})
+mdb.jobs['FCFC']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 3, 'jobName': 'FCFC'})
+mdb.jobs['FCFC']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 4, 'jobName': 'FCFC'})
+mdb.jobs['FCFC']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 5, 'jobName': 'FCFC'})
+mdb.jobs['FCFC']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 6, 'jobName': 'FCFC'})
+mdb.jobs['FCFC']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 7, 'jobName': 'FCFC'})
+mdb.jobs['FCFC']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 8, 'jobName': 'FCFC'})
+mdb.jobs['FCFC']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 9, 'jobName': 'FCFC'})
+mdb.jobs['FCFC']._Message(ODB_FRAME, {'phase': STANDARD_PHASE, 'step': 0, 
+    'frame': 10, 'jobName': 'FCFC'})
+mdb.jobs['FCFC']._Message(STATUS, {'totalTime': 0.0, 'attempts': 1, 
+    'timeIncrement': 1e-36, 'increment': 1, 'stepTime': 1e-36, 'step': 1, 
+    'jobName': 'FCFC', 'severe': 0, 'iterations': 0, 'phase': STANDARD_PHASE, 
+    'equilibrium': 0})
+mdb.jobs['FCFC']._Message(END_STEP, {'phase': STANDARD_PHASE, 'stepId': 1, 
+    'jobName': 'FCFC'})
+mdb.jobs['FCFC']._Message(COMPLETED, {'phase': STANDARD_PHASE, 
+    'message': 'Analysis phase complete', 'jobName': 'FCFC'})
+mdb.jobs['FCFC']._Message(JOB_COMPLETED, {'time': 'Sun Aug  3 01:32:28 2025', 
+    'jobName': 'FCFC'})
+# Save by lenovo on 2025_08_03-01.43.43; build 2022 2021_09_15-17.57.30 176069
+# Save by lenovo on 2025_08_03-01.43.43; build 2022 2021_09_15-17.57.30 176069
+# Save by lenovo on 2025_08_03-01.43.43; build 2022 2021_09_15-17.57.30 176069
+# Save by lenovo on 2025_08_03-01.43.43; build 2022 2021_09_15-17.57.30 176069
+# Save by lenovo on 2025_08_03-01.43.43; build 2022 2021_09_15-17.57.30 176069
+# Save by lenovo on 2025_08_03-01.43.43; build 2022 2021_09_15-17.57.30 176069
+# Save by lenovo on 2025_08_03-01.43.43; build 2022 2021_09_15-17.57.30 176069
+# Save by lenovo on 2025_08_03-01.43.43; build 2022 2021_09_15-17.57.30 176069
+# Save by lenovo on 2025_08_03-01.49.14; build 2022 2021_09_15-17.57.30 176069
+# Save by lenovo on 2025_08_03-01.50.25; build 2022 2021_09_15-17.57.30 176069
+# Save by lenovo on 2025_08_03-06.14.37; build 2022 2021_09_15-17.57.30 176069
